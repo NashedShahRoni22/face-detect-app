@@ -151,8 +151,6 @@ const detectFaces = async () => {
   // ctx.scale(-1, 1);
   ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-  
-
   // ctx.restore();
 
   var showNumber = document.querySelector(".show-number");
@@ -168,22 +166,26 @@ const detectFaces = async () => {
     const rightEar = prediction[0].landmarks[4];
     const leftEar = prediction[0].landmarks[5];
 
-    // console.log(predictions);
-
-    // console.log(predictions.bottomRight[0] - predictions.topLeft[0]);
     const distence = prediction[0].bottomRight[0] - prediction[0].topLeft[0];
+
+    console.log(distence);
+
     const r = rightEye[0] - rightEar[0];
     const l = leftEar[0] - leftEye[0];
-    if (distence < 160) {
+    if (distence < 150) {
       face_distance = "come closer to camera";
+
+      document.querySelector(".main").style.backgroundColor = "red";
 
       var showString = document.querySelector(".right_left");
       showString.innerHTML = "orientation_horizontal: " + "NaN";
-  
+
       var showString = document.querySelector(".up_down");
-      showString.innerHTML = "orientation_vertical: " + 'NaN';
+      showString.innerHTML = "orientation_vertical: " + "NaN";
     } else {
       face_distance = "perfect";
+
+      document.querySelector(".main").style.backgroundColor = "green";
       if (r > 70) {
         face_orientation = "left";
       } else if (l > 60) {
@@ -191,14 +193,16 @@ const detectFaces = async () => {
       } else {
         face_orientation = "front"; // Face is facing front
       }
-      
+
       // console.log(((rightEye[1]  + leftEye[1])/2)-nose[1]);
       // const verticalMidpoint = (nose[1] + mouth[1]) / 2;
-      const verticalMidpoint = ((rightEye[1]  + leftEye[1])/2)-nose[1];
-  
+      const verticalMidpoint = (rightEye[1] + leftEye[1]) / 2 - nose[1];
+
+      // console.log(((rightEye[1]  + leftEye[1])/2)-nose[1]);
+
       // Determine up/down orientation
       let face_orientation_vertical = "";
-      if (verticalMidpoint  > -13) {
+      if (verticalMidpoint > -13) {
         // Adjust this threshold according to your requirements
         face_orientation_vertical += " up";
       } else if (verticalMidpoint < -50) {
@@ -207,38 +211,31 @@ const detectFaces = async () => {
       } else {
         face_orientation_vertical = "middle";
       }
-  
+
       var showString = document.querySelector(".right_left");
       showString.innerHTML = "orientation_horizontal: " + face_orientation;
-  
+
       var showString = document.querySelector(".up_down");
-      showString.innerHTML = "orientation_vertical: " + face_orientation_vertical;
+      showString.innerHTML =
+        "orientation_vertical: " + face_orientation_vertical;
 
       ctx.beginPath();
-
-    ctx.lineWidth = "4";
-    ctx.strokeStyle = "green";
-    ctx.rect(
-      prediction[0].topLeft[0],
-      prediction[0].topLeft[1],
-      prediction[0].bottomRight[0] - prediction[0].topLeft[0],
-      prediction[0].bottomRight[1] - prediction[0].topLeft[1]
-    );
-    // The last two arguments denotes the width and height
-    // but since the blazeface models only returns the coordinates
-    // so we have to subtract them in order to get the width and height
-    ctx.stroke();
-    ctx.fillStyle = "red";
-    prediction[0].landmarks.forEach((landmark) => {
-      ctx.fillRect(landmark[0], landmark[1], 2, 9);
-    });
-      
-    }
-
-    
-
     // Drawing rectangle that'll detect the face
-    
+      ctx.lineWidth = "4";
+      ctx.strokeStyle = "green";
+      ctx.rect(
+        prediction[0].topLeft[0],
+        prediction[0].topLeft[1],
+        prediction[0].bottomRight[0] - prediction[0].topLeft[0],
+        prediction[0].bottomRight[1] - prediction[0].topLeft[1]
+      );
+
+      ctx.stroke();
+      ctx.fillStyle = "red";
+      prediction[0].landmarks.forEach((landmark) => {
+        ctx.fillRect(landmark[0], landmark[1], 2, 9);
+      });
+    }
 
 
   }
