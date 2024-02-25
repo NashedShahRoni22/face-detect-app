@@ -133,7 +133,7 @@ let ctx = canvas.getContext("2d");
 const accessCamera = () => {
   navigator.mediaDevices
     .getUserMedia({
-      video: { width: 500, height: 400 },
+      video: { width: canvas.width, height: canvas.height },
       audio: false,
     })
     .then((stream) => {
@@ -142,21 +142,24 @@ const accessCamera = () => {
     });
 };
 
+
 const detectFaces = async () => {
   const prediction = await model.estimateFaces(video, false);
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
   // Using canvas to draw the video first
 
   // ctx.translate(canvas.width, 0);
   // ctx.scale(-1, 1);
-  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  
 
   // ctx.restore();
 
   var showNumber = document.querySelector(".show-number");
-  showNumber.innerHTML = "Number: " + prediction["length"];
+  showNumber.innerHTML = "faces detected: " + prediction["length"];
   if (prediction["length"] > 1 || prediction["length"] == 0) {
     face_distance = "please give single face ";
+    document.querySelector(".main").style.backgroundColor = "red";
   } else {
     // console.log(prediction[0])
     const rightEye = prediction[0].landmarks[0];
@@ -168,7 +171,7 @@ const detectFaces = async () => {
 
     const distence = prediction[0].bottomRight[0] - prediction[0].topLeft[0];
 
-    console.log(distence);
+    // console.log(distence);
 
     const r = rightEye[0] - rightEar[0];
     const l = leftEar[0] - leftEye[0];
