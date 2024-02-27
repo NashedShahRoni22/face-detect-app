@@ -142,18 +142,16 @@ const accessCamera = () => {
     });
 };
 
-
 const detectFaces = async () => {
   const prediction = await model.estimateFaces(video, false);
-  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
   // Using canvas to draw the video first
+  ctx.save();
+  ctx.translate(canvas.width, 0);
+  ctx.scale(-1, 1);
 
-  // ctx.translate(canvas.width, 0);
-  // ctx.scale(-1, 1);
-  
-
-  // ctx.restore();
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  ctx.restore();
 
   var showNumber = document.querySelector(".show-number");
   showNumber.innerHTML = "faces detected: " + prediction["length"];
@@ -185,6 +183,12 @@ const detectFaces = async () => {
 
       var showString = document.querySelector(".up_down");
       showString.innerHTML = "orientation_vertical: " + "NaN";
+
+      var showString = document.querySelector("#horizontal");
+      showString.innerHTML = "Nan";
+
+      var showString = document.querySelector("#vertical");
+      showString.innerHTML = "Nan";
     } else {
       face_distance = "perfect";
 
@@ -207,10 +211,10 @@ const detectFaces = async () => {
       let face_orientation_vertical = "";
       if (verticalMidpoint > -13) {
         // Adjust this threshold according to your requirements
-        face_orientation_vertical += " up";
+        face_orientation_vertical += "up";
       } else if (verticalMidpoint < -50) {
         // Adjust this threshold according to your requirements
-        face_orientation_vertical += " down";
+        face_orientation_vertical += "down";
       } else {
         face_orientation_vertical = "middle";
       }
@@ -222,25 +226,29 @@ const detectFaces = async () => {
       showString.innerHTML =
         "orientation_vertical: " + face_orientation_vertical;
 
-      ctx.beginPath();
-    // Drawing rectangle that'll detect the face
-      ctx.lineWidth = "4";
-      ctx.strokeStyle = "green";
-      ctx.rect(
-        prediction[0].topLeft[0],
-        prediction[0].topLeft[1],
-        prediction[0].bottomRight[0] - prediction[0].topLeft[0],
-        prediction[0].bottomRight[1] - prediction[0].topLeft[1]
-      );
+      var showString = document.querySelector("#horizontal");
+      showString.innerHTML = face_orientation;
 
-      ctx.stroke();
-      ctx.fillStyle = "red";
-      prediction[0].landmarks.forEach((landmark) => {
-        ctx.fillRect(landmark[0], landmark[1], 2, 9);
-      });
+      var showString = document.querySelector("#vertical");
+      showString.innerHTML = face_orientation_vertical;
+
+      // ctx.beginPath();
+      //   // Drawing rectangle that'll detect the face
+      // ctx.lineWidth = "4";
+      // ctx.strokeStyle = "green";
+      // ctx.rect(
+      //   prediction[0].topLeft[0],
+      //   prediction[0].topLeft[1],
+      //   prediction[0].bottomRight[0] - prediction[0].topLeft[0],
+      //   prediction[0].bottomRight[1] - prediction[0].topLeft[1]
+      // );
+
+      // ctx.stroke();
+      // ctx.fillStyle = "red";
+      // prediction[0].landmarks.forEach((landmark) => {
+      //   ctx.fillRect(landmark[0], landmark[1], 2, 9);
+      // });
     }
-
-
   }
 
   var showString = document.querySelector(".face_distance");
