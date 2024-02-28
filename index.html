@@ -10,7 +10,7 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
-    <title>Facial Detection App</title>
+    <title>Sosay Facial Detection</title>
 
     <style>
       #loader {
@@ -55,52 +55,33 @@
         opacity: 0;
         visibility: hidden;
       }
+      .media {
+        display: flex;
+        justify-content: center;
+      }
     </style>
   </head>
   <body>
-    <!-- <div class="main"  style="text-align: center; background-color: red ; width: 100%; height: 100%;">
-      <h1 class="face_distance"></h1>
-      <h1>Facial Detection</h1>
-      <h1 class="instruction"></h1>
-      <video id="video" autoplay style="display: none"></video>
-      <canvas id="canvas" width="500px" height="400px"></canvas>
-      <h1 class="show-number">0</h1>
-      <h1 class="right_left">0</h1>
-      <h1 class="up_down">0</h1>
-    </div> -->
     <!-- Loader -->
     <div id="loader"></div>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12">
-          <h1 style="text-align: center">Facial Detection</h1>
-        </div>
+    <div class="container mt-3">
+      <h3 class="text-center">Sosay Facial Detection</h3>
+      <div class="mt-5 mb-2">
+        <h5 class="face_distance text-center tips"></h5>
+        <h5 class="show-number" style="display: none">0</h5>
+        <h5 class="right_left" style="display: none">0</h5>
+        <h5 class="up_down" style="display: none">0</h5>
       </div>
-      <div class="row">
-        <div class="col-md-4 main">
-          <h1 class="face_distance"></h1>
-          <h1 class="show-number"style="display: none;">0</h1>
-          <h1 class="right_left"style="display: none;">0</h1>
-          <h1 class="up_down"style="display: none;">0</h1>
-        </div>
-        <div class="col-md-4">
-          <video id="video" autoplay style="display: none"></video>
-          <canvas
-            id="canvas"
-            width="500%"
-            height="400%"
-            style="border-radius: 10%"
-          ></canvas>
-        </div>
-        <div class="col-md-4">
-          <h1 id="horizontal" style="display: none;"></h1>
-          <h1 id="vertical" style="display: none;"></h1>
-
-          <div><h1 class="ho">look Left</h1></div>
-        </div>
+      <div class="media">
+        <video id="video" autoplay style="display: none"></video>
+        <canvas id="canvas" width="500" height="400"></canvas>
+        <img id="captured-image" src="" alt="Captured Image" style="display: none;">
       </div>
-      <div class="row">
-        <div class="col-md-12"></div>
+      <div class="d-flex flex-column align-items-center gap-2 my-2">
+        <h5 id="horizontal" style="display: none"></h5>
+        <h5 id="vertical" style="display: none"></h5>
+        <h5 class="command text-center">Tilt your face to left</h5>
+        <button id="capture-btn" type="button" class="btn btn-primary" style="display: none; width: fit-content;" >Capture</button>
       </div>
     </div>
   </body>
@@ -114,10 +95,6 @@
   <script src="script.js"></script>
 
   <script>
-    // Show loader until the video is loaded and the model is loaded
-    //   const video = document.getElementById("video");
-    // const loader = document.getElementById("loader");
-
     video.addEventListener("loadeddata", async () => {
       // Once the video is loaded, load the model
       model = await blazeface.load();
@@ -132,27 +109,24 @@
     function myFunction() {
       let h = document.getElementById("horizontal").innerHTML;
       let v = document.getElementById("vertical").innerHTML;
-
+      let captureBtn = document.getElementById("capture-btn");
+      let showString = document.querySelector(".command");
 
       if (h == "left" && initial_value == 0) {
-        var showString = document.querySelector(".ho");
-        showString.innerHTML = "good work now look right";
+        showString.innerHTML = "Tilt your face to Right";
         initial_value = 1;
       } else if (h == "right" && initial_value == 1) {
-        var showString = document.querySelector(".ho");
-        showString.innerHTML = "good work now look down";
+        showString.innerHTML = "Tilt your face to Down";
         initial_value = 2;
       } else if (v == "down" && initial_value == 2) {
-        
-        var showString = document.querySelector(".ho");
-        showString.innerHTML = "good work now look up";
+        showString.innerHTML = "Tilt your face to Up";
         initial_value = 3;
       } else if (v == "up" && initial_value == 3) {
-        var showString = document.querySelector(".ho");
-        showString.innerHTML = "good work ";
+        showString.innerHTML = "Ready to capture";
+        captureBtn.style.display = "block"
+        document.querySelector(".tips").style.display = "none";
         initial_value = 4;
       }
-      // console.log(initial_value);
     }
 
     setInterval(myFunction, 1000);
