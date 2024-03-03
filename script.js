@@ -16,20 +16,20 @@ captureBtn.addEventListener('click', async () => {
   const imageDataUrl = canvas.toDataURL('image/jpeg');
 
   const formData = new FormData();
-  formData.append("registration_middle_face_image", imageDataUrl);
+  formData.append("image", imageDataUrl);
   formData.append("user_id", userId);
 
   // Post the image data to the API
   try {
       const response = await fetch('https://api.sosay.org/api/v1/user/registration/image', {
           method: 'POST',
-          body: formData
+        body: formData,
       });
 
       console.log(response);
       
       if (response.ok) {
-          alert('Image captured and sent to the API successfully!');
+          alert('Image captured successfully!');
           window.location.href = "https://sosay.org/register_step_two";
       } else {
           throw new Error('Failed to send image to the API');

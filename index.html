@@ -10,9 +10,20 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
     <title>Sosay Facial Detection</title>
 
     <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+      }
       #loader {
         border: 12px solid #f3f3f3;
         border-radius: 50%;
@@ -64,24 +75,36 @@
   <body>
     <!-- Loader -->
     <div id="loader"></div>
-    <div class="container mt-3">
+    <div class="container mt-5">
       <h3 class="text-center">Sosay Facial Detection</h3>
-      <div class="mt-5 mb-2">
+      <div class="mt-3">
         <h5 class="face_distance text-center tips"></h5>
         <h5 class="show-number" style="display: none">0</h5>
         <h5 class="right_left" style="display: none">0</h5>
         <h5 class="up_down" style="display: none">0</h5>
       </div>
-      <div class="media">
+      <div class="media my-3">
         <video id="video" autoplay style="display: none"></video>
         <canvas id="canvas" width="500" height="400"></canvas>
-        <img id="captured-image" src="" alt="Captured Image" style="display: none;">
+        <img
+          id="captured-image"
+          src=""
+          alt="Captured Image"
+          style="display: none"
+        />
       </div>
-      <div class="d-flex flex-column align-items-center gap-2 my-2">
+      <div class="d-flex flex-column align-items-center gap-3">
         <h5 id="horizontal" style="display: none"></h5>
         <h5 id="vertical" style="display: none"></h5>
-        <h5 class="command text-center">Tilt your face to left</h5>
-        <button id="capture-btn" type="button" class="btn btn-primary" style="display: none; width: fit-content;" >Capture</button>
+        <h5 class="command text-center">When the camera is ready tilt your face to left</h5>
+        <button
+          id="capture-btn"
+          type="button"
+          class="btn btn-primary"
+          style="display: none; width: fit-content"
+        >
+          Capture
+        </button>
       </div>
     </div>
   </body>
@@ -123,7 +146,7 @@
         initial_value = 3;
       } else if (v == "up" && initial_value == 3) {
         showString.innerHTML = "Ready to capture";
-        captureBtn.style.display = "block"
+        captureBtn.style.display = "block";
         document.querySelector(".tips").style.display = "none";
         initial_value = 4;
       }
